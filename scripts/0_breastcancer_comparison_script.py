@@ -4,9 +4,9 @@
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/5_tester/' # Relative path to file
-filename = 'tester.csv' 
-separation = '\t'
+filepath = '../datasets/0_breastcancer/' # Relative path to file
+filename = 'breast_cancer.csv' 
+separation = ','
 
 # Get filename prefix
 name_prefix= filename.split('.')[0]
