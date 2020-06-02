@@ -15,7 +15,7 @@ dict_estimators['LogisticRegression'] =  LogisticRegression()
 dict_estimators['SGDRegressor'] = SGDRegressor(loss='squared_loss')
 dict_estimators['SVR'] = SVR()
 dict_estimators['PolynomialRegression'] = PolynomialRegression(max_degree=5)
-dict_estimators['Perceptron'] = MLPRegressor(max_iter=150, hidden_layer_sizes=(10,5))
+dict_estimators['Perceptron'] = MLPRegressor(max_iter=200, hidden_layer_sizes=(10,5))
 dict_estimators['CESAMORegression'] = OddDegPolynomialRegression(max_degree=11)
 
 from .utilities import *
@@ -45,6 +45,9 @@ class CESAMOEncoder(Encoder):
             except:
                 raise Exception("Cannot convert to pandas.DataFrame")
         
+        # Scale numerical variables to [0,1]
+        df = scale_df(df)
+
         df_copy = df.copy()
         cat_cols = categorical_cols(df_copy)
         
@@ -69,9 +72,9 @@ class CESAMOEncoder(Encoder):
             i = np.random.choice(list(X.columns))
             if is_categorical(X[i]):
                 i_codes = dict(zip(np.unique(X[i]), uniform(0,1,len(np.unique(X[i])))))
-                X_i = replace_in_df(X[i], i_codes).values.reshape(-1,1)
+                X_i = replace_in_df(X[i], i_codes).values.reshape(-1,1).copy()
             else:
-                X_i = X[i].values.reshape(-1,1)
+                X_i = X[i].values.reshape(-1,1).copy()
 
             # Fit the estimator and get error 
             estimator.fit(X_i, y_enc)
@@ -95,8 +98,7 @@ class CESAMOEncoder(Encoder):
 
         # Choose codes corresponding to minimum error and replace in df
         y_final_codes = dict(zip(np.unique(y), codes_var[min(codes_var, key=lambda k:k)]))
-        df[col_num] = replace_in_df(y, y_final_codes)
-
+        df[col_num] = replace_in_df(y, y_final_codes).values
         return df, y_final_codes
 
     def normality_test(self, observations, alpha=0.05):

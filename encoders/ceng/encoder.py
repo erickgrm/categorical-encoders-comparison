@@ -8,8 +8,9 @@ class Encoder():
     def __init__(self):
         self.codes = {}
 
-    def transform(self, X):
-        return replace_in_df(X, self.codes)
+    def transform(self, df):
+        df = scale_df(df)
+        return replace_in_df(df, self.codes)
 
     def fit_transform(self, X,y):
         self.fit(X,y)

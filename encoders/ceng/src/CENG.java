@@ -235,7 +235,13 @@ public class CENG {
     }//endStartPopulation
 
     public static void main(String[] args) throws IOException, Exception {
-        so.println("\n\t\t\tCENG VERSION 2.0 [2015/06/17]\n");
+        // Flag for whether to print to standard output
+        double verbose;
+        verbose = Double.parseDouble(args[1]);
+
+        if(verbose == 1.0){
+            so.println("\n\t\t\tCENG VERSION 2.0 [2015/06/17]\n");
+        }
         Kbr = new BufferedReader(new InputStreamReader(System.in));
         Archivo file = new Archivo();
         BMLP NeuralNet = new BMLP();
@@ -299,27 +305,29 @@ public class CENG {
         //Set the Number of Hidden Neurons.
         BMLP.setMI();
 
-        System.out.println("----------------File Properties");
-        System.out.println("File Name:             " + Archivo.FName);
-        System.out.println("Tuples:                " + nT);
-        System.out.println("Categorical Variables: " + nC);
-        System.out.println("Numerical Variables:   " + nN);
-        System.out.println("Categorical Instances: " + V);
-        System.out.println("----------------Eclectic-GA Parameters");
-        System.out.println("Generations:           " + G);
-        System.out.println("Individuals:           " + N);
-        System.out.println("Length of Genome:      " + L);
-        System.out.println("Crossover Probability: " + Pc);
-        System.out.println("Mutation Probability:  " + Pm);
-        System.out.println("----------------Perceptron Parameters");
-        System.out.println("Effective calculated tuples: " + BMLP.effN);
-        System.out.println("Epochs/BMLP:                 " + BMLP.Epochs);
-        System.out.println("Calculated Hidden Neurons:   " + BMLP.mI);
-        System.out.println("Eta1: " + BMLP.eta1);
-        System.out.println("Eta2: " + BMLP.eta2);
-        System.out.println("Mu1:  " + BMLP.mu1);
-        System.out.println("Mu2:  " + BMLP.mu2);
-        System.out.println("----------------------------------");
+        if(verbose == 1.0){
+            System.out.println("----------------File Properties");
+            System.out.println("File Name:             " + Archivo.FName);
+            System.out.println("Tuples:                " + nT);
+            System.out.println("Categorical Variables: " + nC);
+            System.out.println("Numerical Variables:   " + nN);
+            System.out.println("Categorical Instances: " + V);
+            System.out.println("----------------Eclectic-GA Parameters");
+            System.out.println("Generations:           " + G);
+            System.out.println("Individuals:           " + N);
+            System.out.println("Length of Genome:      " + L);
+            System.out.println("Crossover Probability: " + Pc);
+            System.out.println("Mutation Probability:  " + Pm);
+            System.out.println("----------------Perceptron Parameters");
+            System.out.println("Effective calculated tuples: " + BMLP.effN);
+            System.out.println("Epochs/BMLP:                 " + BMLP.Epochs);
+            System.out.println("Calculated Hidden Neurons:   " + BMLP.mI);
+            System.out.println("Eta1: " + BMLP.eta1);
+            System.out.println("Eta2: " + BMLP.eta2);
+            System.out.println("Mu1:  " + BMLP.mu1);
+            System.out.println("Mu2:  " + BMLP.mu2);
+            System.out.println("----------------------------------");
+        }
 
         //Create all the individuals
         StartPopulation(genome);
@@ -327,12 +335,15 @@ public class CENG {
         Evaluate(fitness, genome);
         seed.setSeed(TotSeed);
         int out = 1;
-        so.println();							// Type of end for GA
-        so.println("Generation:");
+        if(verbose == 1.0){
+            so.println("Generation:");
+        }
         for (int i = 0; i <= G; i++) {
             //so.println("Generation: " + i + "\t ***CREATE FILE \"STOP\" AT ANY TIME TO END PROCESS***");
-
-            so.print(i +","); 
+            
+            if(verbose == 1.0){
+                so.print(i +","); 
+            }
             
             Duplicate(fitness, genome);         //Copy N best individuals to lower matrix
             Crossover(genome);					//Crossover i vs. N-i+1
@@ -371,8 +382,10 @@ public class CENG {
         }//endfor
         GetFenotiposOfGenoma(0);
         prepareData(0);
+        if(verbose == 1.0){
         so.println("\nBest Fitness: 0" + N2S.Num2String((float) fitness[0], 9, 8, 1) + "\n");
-        if (!Stop) {
+        }
+        if (!Stop && verbose == 1.0) {
             while (true) {
                 if (out == 1) {
                     so.println("\n\t*** Max number of generations reached***");
@@ -388,7 +401,7 @@ public class CENG {
         Codes.println("Fitness: "+ N2S.Num2String((float) fitness[0],11,9,1));
         Codes.println("Average: "+ N2S.Num2String((float) AvgErr[0], 11,9,1));
         for (int i = 0; i < V; i++) {
-            String Var_0i = N2S.Num2String((float) Var[0][i], 11,9,1);
+            String Var_0i = N2S.Num2String((float) Var[0][i], 11,6,1);
             Codes.println(nomInstances[i] + ": " + Var_0i);
         }//endfor
         Codes.close();

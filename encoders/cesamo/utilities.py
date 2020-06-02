@@ -34,6 +34,17 @@ def replace_in_df(df, mapping):
 
     return df.replace(mapping)
 
+def scale_df(df):
+    """ Scale all numerical variables to [0,1]
+    """
+    numerical_cols = [x for x in list(df.columns) if x not in categorical_cols(df)]
+    sc = MinMaxScaler()
+
+    for x in numerical_cols:
+        if min(df[x].values) < 0.0 or 1.0 < max(df[x].values):
+            df[x] = sc.fit_transform(df[x].values.reshape(-1,1))
+    return df
+
 def is_categorical(series):
     """ Tests if the column of a dataframe is categorical
     """

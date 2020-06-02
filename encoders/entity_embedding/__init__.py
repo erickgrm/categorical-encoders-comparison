@@ -32,6 +32,9 @@ class EntityEmbeddingEncoder():
     def fit(self, df, y):
         ''' Retrieves the model architecture and fits the encoding model
         '''
+        # Scale numerical variables to [0,1]
+        df = scale_df(df)
+
         self.vartypes(df)
         self.model, y = self.architecture(df,y) # a keras model
 

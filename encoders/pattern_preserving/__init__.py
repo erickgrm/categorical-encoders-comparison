@@ -26,7 +26,7 @@ dict_estimators['LogisticRegression'] =  LogisticRegression()
 dict_estimators['SGDRegressor'] = SGDRegressor(loss='squared_loss')
 dict_estimators['SVR'] = SVR()
 dict_estimators['PolynomialRegression'] = PolynomialRegression(max_degree=5)
-dict_estimators['Perceptron'] = MLPRegressor(max_iter=150, hidden_layer_sizes=(10,5)) 
+dict_estimators['Perceptron'] = MLPRegressor(max_iter=200, hidden_layer_sizes=(10,5)) 
 dict_estimators['CESAMORegression'] = OddDegPolynomialRegression(max_degree=11)
 
 class SimplePPEncoder(Encoder):

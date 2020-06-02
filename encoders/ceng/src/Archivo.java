@@ -102,7 +102,7 @@ public class Archivo {
                     /*
                      * Execute the compressor and calculate the new value of N
                      * Adapted to get bpc value as external argument to readfile
-                     * github.com/erickgrm
+                     * Changed by github.com/erickgrm
                      */
                     // Effective Value of N
                     double cValue = 0d;
