@@ -1,9 +1,9 @@
 """ Auxiliary functions for the CENG Encoder
 """
 import pandas as pd
+pd.set_option('mode.chained_assignment',None)
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler 
-
 
 def replace_in_df(df, mapping): 
     """ Replaces categories by numbers according to the mapping

@@ -2,6 +2,7 @@
 '''
 
 import pandas as pd
+pd.set_option('mode.chained_assignment',None)
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler 
 

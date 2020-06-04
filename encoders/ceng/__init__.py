@@ -44,7 +44,7 @@ class CENGEncoder(Encoder):
         df.to_csv('ceng_input.txt', sep='\t', header=False, index=False)
 
         # Call CENG, which writes the file ceng_codes.txt
-        subprocess.call(['java', '-cp', path+'/src/', 'CENG', bpc_str, str(self.verbose)])
+        subprocess.call(['java', '-cp', path+'src/', 'CENG', bpc_str, str(self.verbose)])
         # Delete input file
         subprocess.call(['rm', 'ceng_input.txt'])
 

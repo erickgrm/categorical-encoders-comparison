@@ -21,12 +21,15 @@ print('>> Evaluating encoders on the', filename, 'dataset')
 print('>> No of rows: ', len(dataset.iloc[0:,0]))
 print('>> No of variables:', len(dataset.iloc[0,0:])-1)
 print('>> No of categorical variables:', num_categorical_cols(dataset))
-print('>> No of categorical instances:', num_categorical_instances(dataset), '\n')
+print('>> No of categorical instances:', num_categorical_instances(dataset))
+print('All encoded versions are saved to '+filepath+'encoded_examples/\n')
 
 # Separate target variable
 features = dataset.drop(dataset.columns[-1], axis=1)
 target = dataset.iloc[:,-1]
 
+import warnings
+warnings.filterwarnings("ignore")
 
 """START: Import encoders"""
 import category_encoders as ce
@@ -61,7 +64,6 @@ try:
     from sklearn.naive_bayes import GaussianNB
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.neural_network import MLPClassifier
-    from sklearn.gaussian_process import GaussianProcessClassifier
     from sklearn.gaussian_process.kernels import RBF
     rbf_kernel = 1.0 * RBF(1.0)
 except:
@@ -69,14 +71,13 @@ except:
 
 Models = {'Naïve Bayes': GaussianNB(),
         'Linear Regression': lm.LinearRegression(), 
-        'Polynomial Regression': PolynomialRegression(max_degree=5),
+        #'Polynomial Regression': PolynomialRegression(max_degree=5),
         'Logistic Regression': lm.LogisticRegression(),
         'Linear SVM': svm.LinearSVC(),
         'Radial SVM': svm.SVC(kernel='rbf'),
         'K-Neighbours (K=7)': KNeighborsClassifier(),
         'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
-        'Neural Network': MLPClassifier(hidden_layer_sizes=(50, 20)),
-        'Gaussian Process': GaussianProcessClassifier(kernel=rbf_kernel)}
+        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
 '''END: Import models'''
 
 
@@ -84,49 +85,56 @@ Models = {'Naïve Bayes': GaussianNB(),
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score as auc
-def performance(model, encoder, K):
-    accumulated_auc = 0.0
+import time
+def performance(encoder, models, K):
+    mean_auc = dict(zip(models.keys(), list(np.zeros(len(models)))))
 
     tic = time.perf_counter()
     for i in range(K):
         good_split = False
         while not(good_split):
             X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.30)
-            # Ensure the split is good for the target variable; relevant for small sets
+            # Ensure the split is good in case of small or unbalanced datasets
             if 1 < len(np.unique(y_train)) and 1 < len(np.unique(y_test)):
                 good_split = True
 
         X_train_enc = encoder.fit_transform(X_train, y_train)
 
-        model.fit(X_train_enc, y_train) 
+        for key in models:
+            model = models[key]
+            model.fit(X_train_enc, y_train) 
 
-        X_test_enc = encoder.transform(X_test)
-        y_test_predict = model.predict(X_test_enc)
-        accumulated_auc += auc(y_test, y_test_predict)
+            X_test_enc = encoder.transform(X_test)
+            y_test_predict = model.predict(X_test_enc)
+            mean_auc[key] += auc(y_test, y_test_predict)/K
 
     toc = time.perf_counter()
 
-    return accumulated_auc/K, toc-tic
+    # Write results to file
+    res = open('../results/'+name_prefix+'_results.txt', 'a')
+    res.write(type(encoder).__name__[0:-7]+' Encoder\n')
+    for key in mean_auc:
+        res.write(' '+key+': '+str(mean_auc[key])+'\n')
+    res.close()
 
-import time
+    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3))
+
+
 """START: Evaluation of encoders"""
 K = 3 #Meta-parameter
-table = []
+
+from multiprocessing import Pool, Process, cpu_count
+print('>> No of available cpu-cores:',  cpu_count(),'\n')
+pool = Pool(cpu_count())
+
+# Create results file
+results = open('../results/'+name_prefix+'_results.txt', 'w')
+results.close()
 
 # Main cycle
-for model in Models:
-    model_dict = {}
-    for encoder in Encoders:
-        print('Evaluating the', encoder,'Encoder on',model)
-        model_dict[encoder], t = performance(Models[model], Encoders[encoder], K)
-        print('>> Done in', round(t,3),'seconds.')
+for encoder in Encoders:
+    Process(target=performance, args=(Encoders[encoder], Models, K)).start()
 
-    table.append(model_dict)
-        
-
-# Convert table into dataframe and save as latex table
-df_table = pd.DataFrame(table, index=Models.keys(), columns=Encoders.keys())
-df_table.to_latex('../results/'+name_prefix+'_table.tex')
 """END: Evaluation of encoders"""
 
 
