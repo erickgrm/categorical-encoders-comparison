@@ -1,19 +1,16 @@
 # Main routine to encode a dataset with several encoders
 # @author: github.com/erickgrm
 
-#########################################################
-# Change the following according to the name of the file to encode
-# and separation character (',' or '\t' or other), 
-filepath = '../datasets/5_tester/' # Path to file
-filename =  'tester.csv' 
-separation = '\t'
+#################### USER INPUT #########################
+# Change the following according to the file to encode
+filepath = '../datasets/ /'         # Path to file
+filename =  ' '                     # .txt, .csv, .data or other 
+separation = ' '                    # , or \t
+target_flag = True                  # Set to True if target variable present
 
-target_flag = 1 # 1 if target variable present, 0 otherwise
-
+##########################################################
 # Get filename prefix to name encoded versions
 name_prefix= filename.split('.')[0]
-##########################################################
-
 
 # Read file and print summary
 import pandas as pd
@@ -24,7 +21,8 @@ print('>> Encoding the', filename, 'dataset')
 print('>> No of rows: ', len(dataset.iloc[0:,]))
 print('>> No of variables:', len(dataset.columns))
 print('>> No of categorical variables:', num_categorical_cols(dataset))
-print('>> No of categorical instances:', num_categorical_instances(dataset), '\n')
+print('>> No of categorical instances:', num_categorical_instances(dataset))
+print('All encoded versions are saved to '+filepath+'encoded_examples/\n')
 
 # Prepare dataset
 if target_flag == 1:
@@ -53,7 +51,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            'CENG': CENGEncoder(),
+            'CENG': CENGEncoder(verbose=0),
             'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
             'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),
             'SimplePP': SimplePPEncoder(estimator_name='LinearRegression', num_predictors=2),
@@ -66,23 +64,30 @@ if target_flag == 0:
 """END: Import encoders"""
 
 import time
+def apply_encoder(X, y, encoder, target_flag):
+
+    tic = time.perf_counter() 
+    X_enc = encoder.fit_transform(X, y)
+    if target_flag:
+        X_enc[len(X_enc.columns)] = y
+    toc = time.perf_counter()
+
+    # Save encoded file
+    X_enc.to_csv(filepath+'/encoded_examples/'+name_prefix+'_'+key+'.csv', sep=',', header=False, index=False)
+    print('>> Applied',key,'Encoder in',round(toc-tic, 3), 'seconds.')
+
+    return round(toc-tic,3)
+
+
 """ START: Apply encoders and save encoded dataset """
+from multiprocessing import Pool, Process, cpu_count
+print('>> No of available cpu-cores:', cpu_count(), '\n')
+pool = Pool(cpu_count())
+
 for key in Encoders:
-    print('Encoding with the '+key+ ' Encoder')
-    try: 
-        tic = time.perf_counter() 
-
-        df = Encoders[key].fit_transform(features, target)
-        if target_flag == 1:
-            df[len(df.columns)] = target
-        # Save encoded file
-        df.to_csv(filepath+'/encoded_examples/'+name_prefix+'_'+key+'.csv', sep=',', header=False, index=False)
-
-        toc = time.perf_counter()
-        print('>> Done in ',round(toc-tic, 3), ' seconds.')
-        print('Saved to '+filepath+'encoded_examples/'+name_prefix+'_'+key+'.csv\n')
+    try:
+        Process(target=apply_encoder, args=(features, target, Encoders[key], target_flag)).start()
     except: 
-        raise Exception('   Encoding with the '+key+' Encoder failed.\n')
-
+        raise Exception('>> Encoding with the '+key+' Encoder failed.\n')
 
 """ END: Apply encoders and save encoded dataset"""

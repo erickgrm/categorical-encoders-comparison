@@ -1,0 +1,15 @@
+*.aux
+*.log
+*.zip
+*.toc
+*.b*
+*.ind
+*.ilg
+*.java
+*.out
+*.gitignore
+*.pdf
+*.data
+*.csv
+*__pycache__*
+*.ipynb*

@@ -54,7 +54,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            'CENG': CENGEncoder(verbose=0),
+            'CENG': CENGEncoder(verbose=0), # verbose=0 for multiprocessing
             'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
             'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),
             'SimplePP': SimplePPEncoder(estimator_name='LinearRegression', num_predictors=2),
