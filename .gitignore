@@ -1,5 +1,6 @@
 *.aux
 *.log
+*.h5
 *.zip
 *.toc
 *.b*

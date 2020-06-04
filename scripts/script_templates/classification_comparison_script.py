@@ -4,19 +4,18 @@
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/0_breastcancer/' # Relative path to file
-filename = 'breast_cancer.csv' 
-separation = ','
+filepath = '../datasets/  /'            # Path to file
+filename = ' '                          # .txt, .csv, .data or other
+separation = ' '                        # , or \t
 
+##########################################################
 # Get filename prefix
 name_prefix= filename.split('.')[0]
-##########################################################
 
 # Read file and print summary
 import pandas as pd
 from utils import *
 dataset = pd.read_csv(filepath+filename, sep=separation, header=None) 
-
 print('>> Evaluating encoders on the', filename, 'dataset')
 print('>> No of rows: ', len(dataset.iloc[0:,0]))
 print('>> No of variables:', len(dataset.iloc[0,0:])-1)
@@ -56,7 +55,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
 """END: Import encoders"""
 
 
-'''START: Import models'''
+"""START: Import models"""
 try: 
     import sklearn.linear_model as lm
     import sklearn.svm as svm
@@ -78,10 +77,11 @@ Models = {'Naïve Bayes': GaussianNB(),
         'K-Neighbours (K=7)': KNeighborsClassifier(),
         'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
         'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
-'''END: Import models'''
+
+"""END: Import models"""
 
 
-#Main performance evaluation function 
+# Performance evaluation function 
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score as auc
@@ -117,7 +117,7 @@ def performance(encoder, models, K):
         res.write(' '+key+': '+str(mean_auc[key])+'\n')
     res.close()
 
-    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3), 's')
+    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')
 
 
 """START: Evaluation of encoders"""

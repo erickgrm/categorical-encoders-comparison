@@ -1,19 +1,16 @@
 # Main routine to encode a dataset with several encoders
 # @author: github.com/erickgrm
 
-#########################################################
-# Change the following according to the name of the file to encode
-# and separation character (',' or '\t' or other), 
-filepath = '../datasets/5_tester/' # Path to file
-filename =  'tester.csv' 
-separation = '\t'
+#################### USER INPUT #########################
+# Change the following according to the file to encode
+filepath = '../datasets/1_mpg/'         # Path to file
+filename =  'mpg.csv'                     # .txt, .csv, .data or other 
+separation = ','                    # , or \t
+target_flag = True                  # Set to True if target variable present
 
-target_flag = True # True if target variable present
-
+##########################################################
 # Get filename prefix to name encoded versions
 name_prefix= filename.split('.')[0]
-##########################################################
-
 
 # Read file and print summary
 import pandas as pd
@@ -53,7 +50,6 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'Helmert': ce.HelmertEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
-            'WOE': ce.WOEEncoder(),
             'CENG': CENGEncoder(verbose=0),
             'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
             'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),

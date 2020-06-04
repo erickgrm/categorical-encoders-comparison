@@ -30,7 +30,7 @@ dict_estimators['Perceptron'] = MLPRegressor(max_iter=200, hidden_layer_sizes=(1
 dict_estimators['CESAMORegression'] = OddDegPolynomialRegression(max_degree=11)
 
 class SimplePPEncoder(Encoder):
-    """ Samples randomly 800 sets of codes (can be changed with self.sampling_size), 
+    """ Samples randomly 600 sets of codes (can be changed with self.sample_size), 
         encodes with best found 
     """
 
@@ -51,7 +51,7 @@ class SimplePPEncoder(Encoder):
         self.num_predictors = num_predictors
         self.codes = {}
 
-        self.sample_size = 800
+        self.sample_size = 600
         self.history = []
         self.threshold = 0.01
 
@@ -169,8 +169,8 @@ class GeneticPPEncoder(Encoder):
 
         self.generations = 80 # How many generations the GA will run for
         self.threshold = 0.01
-        self.size_population = 25
-        self.rate_mutation = 0.15
+        self.size_population = 20
+        self.rate_mutation = 0.10
         self.history = []
 
     def fit(self, df, _):
