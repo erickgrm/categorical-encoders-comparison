@@ -21,7 +21,7 @@ print('>> No of rows: ', len(dataset.iloc[0:,0]))
 print('>> No of variables:', len(dataset.iloc[0,0:])-1)
 print('>> No of categorical variables:', num_categorical_cols(dataset))
 print('>> No of categorical instances:', num_categorical_instances(dataset))
-print('All encoded versions are saved to '+filepath+'encoded_examples/\n')
+print('Results are saved to ../results/'+name_prefix+'_results.txt')
 
 # Separate target variable
 features = dataset.drop(dataset.columns[-1], axis=1)

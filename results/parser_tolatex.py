@@ -25,17 +25,19 @@ def main(argv):
     index = []
     encoders = []
     # There are 13 encoders and 8 models
-    for i in range(13):
+    for i in range(13): #original
         encoder = f.readline().split('\n')[0]
         column = []
-        for j in range(8):
+        for j in range(8): #Original
             line = f.readline()
             column.append(round(float(line.split(': ')[1].split('\n')[0]),5))
             if i == 0:
                 index.append(line.split(': ')[0][1:])
 
+        column.append(np.mean(column))
         encoders.append(encoder)
         table.append(column)
+    encoders.append('Average ($\eve(D)$)')
 
     f.close()
 

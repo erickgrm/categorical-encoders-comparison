@@ -24,6 +24,7 @@ dataset = pd.read_csv(filename, sep=separation, header=None)
 print('>> Total rows: ', len(dataset.iloc[0:,0]))
 print('>> Number of variables:', len(dataset.iloc[0,0:])-1)
 print('>> Total categorical instances:', num_categorical_instances(dataset), '\n')
+print('Results are saved to ../results/'+name_prefix+'_results.txt')
 
 # Separate target variable
 features = scale_df(dataset.drop(dataset.columns[-1], axis=1))

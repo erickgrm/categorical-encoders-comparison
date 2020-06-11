@@ -4,9 +4,9 @@
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/  /'            # Path to file
-filename = ' '                          # .txt, .csv, .data or other
-separation = ' '                        # , or \t
+filepath = '../datasets/3_germancredit/'   # Path to file
+filename = 'germancredit.csv'              # .txt, .csv, .data or other
+separation = '\t'                          # , or \t
 
 ##########################################################
 # Get filename prefix

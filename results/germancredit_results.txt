@@ -1,0 +1,117 @@
+Ordinal Encoder
+ Naïve Bayes: 0.6446480806709348
+ Linear Regression: 0.7383096243582005
+ Logistic Regression: 0.6125589344595521
+ Linear SVM: 0.5439695411565006
+ Radial SVM: 0.532061411853899
+ K-Neighbours (K=7): 0.530132974534614
+ Random Forest (n=50): 0.6568248183530416
+ Neural Network: 0.5079083054626533
+Target Encoder
+ Naïve Bayes: 0.6370086849446147
+ Linear Regression: 0.7952565783554264
+ Logistic Regression: 0.5806266634184762
+ Linear SVM: 0.5251331062982376
+ Radial SVM: 0.5356636972496627
+ K-Neighbours (K=7): 0.5404836670061458
+ Random Forest (n=50): 0.6589963058059211
+ Neural Network: 0.49720482252306863
+WOE Encoder
+ Naïve Bayes: 0.6795405989079188
+ Linear Regression: 0.7990639178571323
+ Logistic Regression: 0.6874622742803043
+ Linear SVM: 0.5243504666424255
+ Radial SVM: 0.5245895542984759
+ K-Neighbours (K=7): 0.5340737880719915
+ Random Forest (n=50): 0.6806964499358663
+ Neural Network: 0.5245278081824459
+BackwardDifference Encoder
+ Naïve Bayes: 0.6699448162654187
+ Linear Regression: 0.7827170454005297
+ Logistic Regression: 0.6664720583854996
+ Linear SVM: 0.5318165659438322
+ Radial SVM: 0.5324640217278656
+ K-Neighbours (K=7): 0.5363587862119721
+ Random Forest (n=50): 0.6400952341109072
+ Neural Network: 0.5
+OneHot Encoder
+ Naïve Bayes: 0.6796825006318419
+ Linear Regression: 0.7589174073888335
+ Logistic Regression: 0.6695914948477045
+ Linear SVM: 0.5
+ Radial SVM: 0.5313580868309273
+ K-Neighbours (K=7): 0.526338381575174
+ Random Forest (n=50): 0.6443057682961278
+ Neural Network: 0.5
+Helmert Encoder
+ Naïve Bayes: 0.6768452816287397
+ Linear Regression: 0.7827170454005297
+ Logistic Regression: 0.6644614213639919
+ Linear SVM: 0.5645805069272644
+ Radial SVM: 0.5324640217278656
+ K-Neighbours (K=7): 0.5281271055662395
+ Random Forest (n=50): 0.6353121140082804
+ Neural Network: 0.5
+Polynomial Encoder
+ Naïve Bayes: 0.7054108266601209
+ Linear Regression: 0.7827170454005297
+ Logistic Regression: 0.6841776632094603
+ Linear SVM: 0.5326375840062295
+ Radial SVM: 0.5324640217278656
+ K-Neighbours (K=7): 0.5355377681495747
+ Random Forest (n=50): 0.6399506617464497
+ Neural Network: 0.5
+EntityEmbedding Encoder
+ Naïve Bayes: 0.5
+ Linear Regression: 0.564280701925723
+ Logistic Regression: 0.5
+ Linear SVM: 0.5
+ Radial SVM: 0.5
+ K-Neighbours (K=7): 0.5064996295547922
+ Random Forest (n=50): 0.6852077266998401
+ Neural Network: 0.5
+CESAMO Encoder
+ Naïve Bayes: 0.6853040354388913
+ Linear Regression: 0.7484124184602334
+ Logistic Regression: 0.56959709305431
+ Linear SVM: 0.6128961737793761
+ Radial SVM: 0.5072751322751322
+ K-Neighbours (K=7): 0.5375214533925049
+ Random Forest (n=50): 0.6663081119870023
+ Neural Network: 0.5
+AgingPP Encoder
+ Naïve Bayes: 0.6757759091560999
+ Linear Regression: 0.7292218729365856
+ Logistic Regression: 0.5808778742136197
+ Linear SVM: 0.5964788576161655
+ Radial SVM: 0.5654668396383549
+ K-Neighbours (K=7): 0.5748989533644451
+ Random Forest (n=50): 0.6678146603385131
+ Neural Network: 0.5071613141380583
+SimplePP Encoder
+ Naïve Bayes: 0.6366306543807878
+ Linear Regression: 0.7279186930666864
+ Logistic Regression: 0.6191879080551592
+ Linear SVM: 0.6342411220874431
+ Radial SVM: 0.5820261225724072
+ K-Neighbours (K=7): 0.5768554277458064
+ Random Forest (n=50): 0.6622875263574812
+ Neural Network: 0.5
+GeneticPP Encoder
+ Naïve Bayes: 0.6483692786419548
+ Linear Regression: 0.7372725218546603
+ Logistic Regression: 0.6318517252414533
+ Linear SVM: 0.6484266654882661
+ Radial SVM: 0.5911934692072734
+ K-Neighbours (K=7): 0.5882272165860507
+ Random Forest (n=50): 0.6659123500836467
+ Neural Network: 0.4988817328476901
+CENG Encoder
+ Naïve Bayes: 0.6238456656014801
+ Linear Regression: 0.7213761532434934
+ Logistic Regression: 0.5971697895157464
+ Linear SVM: 0.6071324171077486
+ Radial SVM: 0.5809098042912612
+ K-Neighbours (K=7): 0.59115755418644
+ Random Forest (n=50): 0.6242114219380306
+ Neural Network: 0.4991789819376026
