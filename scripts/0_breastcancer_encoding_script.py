@@ -55,9 +55,9 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
             'CENG': CENGEncoder(verbose=0), # verbose=0 for multiprocessing
-            'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'SimplePP': SimplePPEncoder(estimator_name='LinearRegression', num_predictors=2),
+            'GeneticPP': GeneticPPEncoder(num_predictors=2),
+            'AgingPP': AgingPPEncoder(num_predictors=2),
+            'SimplePP': SimplePPEncoder(num_predictors=2),
             'CESAMOEncoder': CESAMOEncoder()}
 
 if target_flag == 0:

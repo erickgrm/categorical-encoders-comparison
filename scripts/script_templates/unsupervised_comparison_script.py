@@ -49,11 +49,11 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'Entity Embedding': EEEncoder(),
             'Target': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            #'CENG': CENGEncoder(),
-            #'CESAMOEncoder': CESAMOEncoder(),
-            'Naive PP': NaivePPEncoder(name_estimator='LinearRegression', num_predictors=2),
-            'Genetic PP': GeneticPPEncoder(name_estimator='LinearRegression', num_predictors=2),
-            'Aging PP': AgingPPEncoder(name_estimator='LinearRegression', num_predictors=2)}
+            'CENG': CENGEncoder(),
+            'CESAMOEncoder': CESAMOEncoder(),
+            'Naive PP': NaivePPEncoder( num_predictors=2),
+            'Genetic PP': GeneticPPEncoder(num_predictors=2),
+            'Aging PP': AgingPPEncoder(num_predictors=2)}
 '''END: Import encoders'''
 
 
@@ -75,7 +75,6 @@ Models = {'Naive Bayes': GaussianNB(),
         'Polynomial Regression': PolynomialRegression(max_degree=5),
         'Logistic Regression': lm.LogisticRegression(),
         'Linear SVM': svm.LinearSVC(),
-        #'Polynomial SVM (d=3)': svm.SVC(kernel='polynomial', degree=3),
         'Radial SVM': svm.SVC(kernel='rbf'),
         'K-Neighbours (K=5)': KNeighborsClassifier(),
         'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),

@@ -48,9 +48,9 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
             'CENG': CENGEncoder(verbose = 0),
-            'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'SimplePP': SimplePPEncoder(estimator_name='LinearRegression', num_predictors=2),
+            'GeneticPP': GeneticPPEncoder(),
+            'AgingPP': AgingPPEncoder(),
+            'SimplePP': SimplePPEncoder(),
             'CESAMOEncoder': CESAMOEncoder()}
 """END: Import encoders"""
 
@@ -70,7 +70,6 @@ except:
 
 Models = {'Naïve Bayes': GaussianNB(),
         'Linear Regression': lm.LinearRegression(), 
-        #'Polynomial Regression': PolynomialRegression(max_degree=5),
         'Logistic Regression': lm.LogisticRegression(),
         'Linear SVM': svm.LinearSVC(),
         'Radial SVM': svm.SVC(kernel='rbf'),
@@ -115,6 +114,7 @@ def performance(encoder, models, K):
     res.write(type(encoder).__name__[0:-7]+' Encoder\n')
     for key in mean_auc:
         res.write(' '+key+': '+str(mean_auc[key])+'\n')
+    res.write('Total time: '+str(round(toc-tic,3))) 
     res.close()
 
     print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')

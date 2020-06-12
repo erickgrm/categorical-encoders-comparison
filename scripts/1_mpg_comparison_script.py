@@ -46,10 +46,10 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'Helmert': ce.HelmertEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
-            'CENG': CENGEncoder(verbose = 0),
-            'GeneticPP': GeneticPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'AgingPP': AgingPPEncoder(estimator_name='LinearRegression', num_predictors=2),
-            'SimplePP': SimplePPEncoder(estimator_name='LinearRegression', num_predictors=2),
+            #'CENG': CENGEncoder(verbose = 0),
+            'GeneticPP': GeneticPPEncoder(),
+            'AgingPP': AgingPPEncoder(),
+            'SimplePP': SimplePPEncoder(),
             'CESAMOEncoder': CESAMOEncoder()}
 """END: Import encoders"""
 
@@ -111,6 +111,7 @@ def performance(encoder, models, K):
     res.write(type(encoder).__name__[0:-7]+' Encoder\n')
     for key in mean_auc:
         res.write(' '+key+': '+str(mean_auc[key])+'\n')
+    res.write('Total time: '+str(round(toc-tic,3)))
     res.close()
 
     print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')

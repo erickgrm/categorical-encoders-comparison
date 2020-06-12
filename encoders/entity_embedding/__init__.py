@@ -94,7 +94,7 @@ class EntityEmbeddingEncoder():
                 inputs.append(input)
                 ee_layers.append(output)
                 
-        # Append las two dense layers
+        # Append last two dense layers
         last_layers = Concatenate(name='C')(ee_layers)
         last_layers = Dense(1000, activation='relu', name='Dense_1000')(last_layers)
         last_layers = Dense(500, activation='relu', name='Dense_500')(last_layers)

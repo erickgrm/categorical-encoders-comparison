@@ -15,7 +15,7 @@ dict_estimators['LogisticRegression'] =  LogisticRegression()
 dict_estimators['SGDRegressor'] = SGDRegressor(loss='squared_loss')
 dict_estimators['SVR'] = SVR()
 dict_estimators['PolynomialRegression'] = PolynomialRegression(max_degree=5)
-dict_estimators['Perceptron'] = MLPRegressor(max_iter=200, hidden_layer_sizes=(10,5))
+dict_estimators['Perceptron'] = MLPRegressor(max_iter=300, hidden_layer_sizes=(10,5))
 dict_estimators['CESAMORegression'] = OddDegPolynomialRegression(max_degree=11)
 
 from .utilities import *
@@ -29,7 +29,7 @@ colours = ['blue', 'yellow']
 
 class CESAMOEncoder(Encoder):
 
-    def __init__(self, estimator_name='LinearRegression', plot=False):
+    def __init__(self, estimator_name='CESAMORegression', plot=False):
         """ Allows any of the keys in dict_estimators as estimator_name
         """
         super(CESAMOEncoder, self).__init__()
@@ -53,8 +53,8 @@ class CESAMOEncoder(Encoder):
         
         # Find codes variable by variable
         for x in cat_cols:
-                df_copy, codes_x = self.encode_var(df_copy, x, self.estimator, self.num_predictors)
-                self.codes.update(codes_x)
+            df_copy, codes_x = self.encode_var(df_copy, x, self.estimator, self.num_predictors)
+            self.codes.update(codes_x)
 
     def encode_var(self, df, col_num, estimator, num_predictors):
         # Ensure y has the correct type

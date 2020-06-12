@@ -30,15 +30,16 @@ def main(argv):
         column = []
         for j in range(8): #Original
             line = f.readline()
-            column.append(round(float(line.split(': ')[1].split('\n')[0]),5))
+            column.append(round(float(line.split(': ')[1]),5))
             if i == 0:
                 index.append(line.split(': ')[0][1:])
+        f.readline() # skips the line for total time
 
         column.append(np.mean(column))
         encoders.append(encoder)
         table.append(column)
-    encoders.append('Average ($\eve(D)$)')
 
+    encoders.append('Average ($\eve(D)$)')
     f.close()
 
     pd.DataFrame(table, index=encoders, columns=index).transpose().to_latex('./latex/'+name_prefix+'_table.tex')

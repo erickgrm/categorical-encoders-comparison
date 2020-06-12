@@ -34,12 +34,8 @@ class CENGEncoder(Encoder):
         df = scale_df(df)
 
         # Take random sample 
-        df = df.sample(frac=0.60, replace=False)
         if 1000 < df.shape[0]:
-            df = df.sample(frac=0.50, replace=False)
-        else:
-            if 3000 < df.shape[0]:
-                df = df.sample(frac=0.50, replace=False)
+            df = df.sample(frac=0.35, replace=False)
         
         # Save file as ceng_input.txt
         df.to_csv('ceng_input.txt', sep='\t', header=False, index=False)
