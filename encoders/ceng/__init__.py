@@ -23,6 +23,8 @@ class CENGEncoder(Encoder):
         try: 
             output = subprocess.getoutput(path+'/src/pzip-0.82/pzip temp_input.txt -v')
             bpc = float(output.split('bpc')[0].split('=')[2])
+            if bpc == 0.0: bpc=1.0 #Failsafe
+
             if self.verbose == 1.0:
                 print('>> bpc = ', bpc)
         except: 

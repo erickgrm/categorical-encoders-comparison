@@ -10,11 +10,10 @@ except:
 
 class PolynomialRegression(LinearRegression):
 
-    def __init__(self, max_degree=1, interaction=False):
+    def __init__(self, max_degree=1):
         super().__init__()
         self.max_degree = max_degree
-        self.interaction = interaction
-        self.poly = PolynomialFeatures(self.max_degree, interaction_only=self.interaction)
+        self.poly = PolynomialFeatures(self.max_degree, include_bias=False)
 
     def fit(self, X, y):
         return super(PolynomialRegression, self).fit(self.poly.fit_transform(X),y)

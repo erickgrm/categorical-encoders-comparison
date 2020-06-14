@@ -46,7 +46,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'Helmert': ce.HelmertEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
-            #'CENG': CENGEncoder(verbose = 0),
+            'CENG': CENGEncoder(verbose = 0),
             'GeneticPP': GeneticPPEncoder(),
             'AgingPP': AgingPPEncoder(),
             'SimplePP': SimplePPEncoder(),
@@ -71,7 +71,7 @@ Models = {'Linear Regression': lm.LinearRegression(),
         'Radial SVM': svm.SVR(kernel='rbf'),
         'K-Neighbours (K=7)': KNeighborsRegressor(),
         'Random Forest (n=50)': RandomForestRegressor(n_estimators=50),
-        'Neural Network': MLPRegressor(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
+        'Neural Network': MLPRegressor(max_iter=1000, hidden_layer_sizes=(100, 50), early_stopping=True)}
 
 """END: Import models"""
 
@@ -111,7 +111,7 @@ def performance(encoder, models, K):
     res.write(type(encoder).__name__[0:-7]+' Encoder\n')
     for key in mean_auc:
         res.write(' '+key+': '+str(mean_auc[key])+'\n')
-    res.write('Total time: '+str(round(toc-tic,3)))
+    res.write('Total time: '+str(round(toc-tic,3))+'\n')
     res.close()
 
     print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')

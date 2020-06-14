@@ -82,7 +82,7 @@ class AgingPPEncoder(Encoder):
         Completes 800 iterations (can be changed with self.cycles)
     """
 
-    def __init__(self, estimator_name='Perceptron', num_predictors=2):
+    def __init__(self, estimator_name='PolynomialRegression', num_predictors=2):
         """ Allowed strings for estimator_name
             'LinearRegression'
             'LogisticRegression'
@@ -159,7 +159,7 @@ class GeneticPPEncoder(Encoder):
         Completes 80 generations of a population of size 20
     """
 
-    def __init__(self, estimator_name='Perceptron', num_predictors=2):
+    def __init__(self, estimator_name='PolynomialRegression', num_predictors=2):
         """ Allows any of the keys in dict_estimators as estimator_name
         """
         super(GeneticPPEncoder, self).__init__()
@@ -281,7 +281,7 @@ class NaivePPEncoder(Encoder):
     """ Samples randomly 500 sets of codes for each categorical variable in a sequential manner 
         Encodes with best found 
     """
-    def __init__(self, estimator_name='Perceptron', num_predictors=1):
+    def __init__(self, estimator_name='PolynomialRegression', num_predictors=1):
         """ Allows any of the estimators names in dict_estimators
         """
         super(NaivePPEncoder, self).__init__()

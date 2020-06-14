@@ -1,0 +1,130 @@
+Ordinal Encoder
+ Naïve Bayes: 0.6879543883778608
+ Linear Regression: 0.6964951203860258
+ Logistic Regression: 0.5908678514244152
+ Linear SVM: 0.5784471986528853
+ Radial SVM: 0.509467548427016
+ K-Neighbours: 0.5335649763961924
+ Random Forest: 0.6495802331253028
+ Neural Network: 0.5
+Total time: 4.664
+WOE Encoder
+ Naïve Bayes: 0.6801443122169856
+ Linear Regression: 0.7362568807847512
+ Logistic Regression: 0.6371773072366325
+ Linear SVM: 0.6553343393721592
+ Radial SVM: 0.6229190500788573
+ K-Neighbours: 0.6329774840712921
+ Random Forest: 0.6331592884243978
+ Neural Network: 0.5190479709389608
+Total time: 6.518
+Target Encoder
+ Naïve Bayes: 0.68389669443817
+ Linear Regression: 0.755875551922032
+ Logistic Regression: 0.6149764346672284
+ Linear SVM: 0.6166486852967814
+ Radial SVM: 0.6553473495154447
+ K-Neighbours: 0.644372303877343
+ Random Forest: 0.6209277322140008
+ Neural Network: 0.5
+Total time: 6.828
+BackwardDifference Encoder
+ Naïve Bayes: 0.5688512831411721
+ Linear Regression: 0.6966785260327049
+ Logistic Regression: 0.6110226710752719
+ Linear SVM: 0.6252824518166423
+ Radial SVM: 0.5436828065758517
+ K-Neighbours: 0.5503263130790892
+ Random Forest: 0.6120636114324016
+ Neural Network: 0.5048587570621469
+Total time: 7.482
+Polynomial Encoder
+ Naïve Bayes: 0.6746553427091125
+ Linear Regression: 0.6966785260327049
+ Logistic Regression: 0.6109146357246883
+ Linear SVM: 0.6035848390845469
+ Radial SVM: 0.613090410466214
+ K-Neighbours: 0.6338509493623461
+ Random Forest: 0.6023160027192757
+ Neural Network: 0.4889265536723164
+Total time: 7.576
+Helmert Encoder
+ Naïve Bayes: 0.5791797283176594
+ Linear Regression: 0.6819500263465781
+ Logistic Regression: 0.632584800257214
+ Linear SVM: 0.6292048468772606
+ Radial SVM: 0.5252247273798998
+ K-Neighbours: 0.5256075342282239
+ Random Forest: 0.613223414516518
+ Neural Network: 0.5320546311925622
+Total time: 7.646
+OneHot Encoder
+ Naïve Bayes: 0.5935901001112347
+ Linear Regression: 0.6480347193952589
+ Logistic Regression: 0.6201524961257998
+ Linear SVM: 0.5856019660107535
+ Radial SVM: 0.6224477490745566
+ K-Neighbours: 0.613268087739723
+ Random Forest: 0.6373753363186065
+ Neural Network: 0.4953482264244222
+Total time: 7.839
+EntityEmbedding Encoder
+ Naïve Bayes: 0.688161748905967
+ Linear Regression: 0.7195734909827219
+ Logistic Regression: 0.6043047177746221
+ Linear SVM: 0.5971496477186256
+ Radial SVM: 0.4890710382513661
+ K-Neighbours: 0.584085366792374
+ Random Forest: 0.6631225410933917
+ Neural Network: 0.5744342244698624
+Total time: 45.124
+CESAMO Encoder
+ Naïve Bayes: 0.6494077442353304
+ Linear Regression: 0.6863768420555504
+ Logistic Regression: 0.5
+ Linear SVM: 0.5395400895400896
+ Radial SVM: 0.5678130511463845
+ K-Neighbours: 0.58629695123948
+ Random Forest: 0.6072658928980768
+ Neural Network: 0.5449735449735449
+Total time: 169.055
+AgingPP Encoder
+ Naïve Bayes: 0.685439457903041
+ Linear Regression: 0.7625730030943672
+ Logistic Regression: 0.6116244587819879
+ Linear SVM: 0.6574144550834418
+ Radial SVM: 0.6082056678686577
+ K-Neighbours: 0.6215433449934918
+ Random Forest: 0.6282478511828539
+ Neural Network: 0.489247311827957
+Total time: 174.425
+SimplePP Encoder
+ Naïve Bayes: 0.7187678520583254
+ Linear Regression: 0.7480617872289409
+ Logistic Regression: 0.6343370948163468
+ Linear SVM: 0.6370828275562349
+ Radial SVM: 0.6206240165445309
+ K-Neighbours: 0.6034538206776664
+ Random Forest: 0.6219015720301517
+ Neural Network: 0.4862953138815207
+Total time: 268.981
+GeneticPP Encoder
+ Naïve Bayes: 0.7112077207810696
+ Linear Regression: 0.7457072990920157
+ Logistic Regression: 0.6072696778512091
+ Linear SVM: 0.6389334722034897
+ Radial SVM: 0.569638750268499
+ K-Neighbours: 0.5864765818959273
+ Random Forest: 0.645058732585033
+ Neural Network: 0.5013262599469496
+Total time: 509.545
+CENG Encoder
+ Naïve Bayes: 0.6783131938304352
+ Linear Regression: 0.7552974670072372
+ Logistic Regression: 0.5674255820807546
+ Linear SVM: 0.5858474964796804
+ Radial SVM: 0.5867979827749943
+ K-Neighbours: 0.6094696597570162
+ Random Forest: 0.6176335265415726
+ Neural Network: 0.5006631299734748
+Total time: 1665.764

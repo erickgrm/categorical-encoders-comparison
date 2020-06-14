@@ -5,6 +5,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from .utilities import *
+import numpy as np
 try: 
     from category_encoders import OneHotEncoder
 except:
@@ -17,6 +18,8 @@ try:
 except: 
     raise Exception('Tensorflow 2.x not available')
 
+import warnings
+warnings.filterwarnings("ignore")
 
 class EntityEmbeddingEncoder(): 
     
@@ -80,7 +83,8 @@ class EntityEmbeddingEncoder():
                 k = len(np.unique(df[x])) 
 
                 # A heuristic decision, how many encoding neurons to use
-                enc_size = min(max(1,np.int(k/2)), 30) 
+                enc_size = min(max(1,np.int(np.ceil(k/3))), 30) 
+                #enc_size = min(max(1,np.int(k/2)), 30) 
 
                 # Add EE Layer
                 input = Input(shape=(k,), name='Var_'+str(x))

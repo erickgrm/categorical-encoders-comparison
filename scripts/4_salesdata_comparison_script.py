@@ -4,25 +4,24 @@
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/0_breastcancer/' # Relative path to file
-filename = 'breast_cancer.csv' 
-separation = ','
+filepath = '../datasets/4_salesdata/'    # Path to file
+filename = 'salesdata.csv'               # .txt, .csv, .data or other
+separation = '\t'                        # , or \t
 
+##########################################################
 # Get filename prefix
 name_prefix= filename.split('.')[0]
-##########################################################
 
 # Read file and print summary
 import pandas as pd
 from utils import *
 dataset = pd.read_csv(filepath+filename, sep=separation, header=None) 
-
 print('>> Evaluating encoders on the', filename, 'dataset')
 print('>> No of rows: ', len(dataset.iloc[0:,0]))
 print('>> No of variables:', len(dataset.iloc[0,0:])-1)
 print('>> No of categorical variables:', num_categorical_cols(dataset))
 print('>> No of categorical instances:', num_categorical_instances(dataset))
-print('All encoded versions are saved to '+filepath+'encoded_examples/\n')
+print('Results are saved to ../results/'+name_prefix+'_results.txt')
 
 # Separate target variable
 features = dataset.drop(dataset.columns[-1], axis=1)
@@ -48,7 +47,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            'CENG': CENGEncoder(verbose=0),
+            #'CENG': CENGEncoder(verbose = 0),
             'GeneticPP': GeneticPPEncoder(),
             'AgingPP': AgingPPEncoder(),
             'SimplePP': SimplePPEncoder(),
@@ -56,7 +55,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
 """END: Import encoders"""
 
 
-'''START: Import models'''
+"""START: Import models"""
 try: 
     import sklearn.linear_model as lm
     import sklearn.svm as svm
@@ -74,13 +73,14 @@ Models = {'Naïve Bayes': GaussianNB(),
         'Logistic Regression': lm.LogisticRegression(),
         'Linear SVM': svm.LinearSVC(),
         'Radial SVM': svm.SVC(kernel='rbf'),
-        'K-Neighbours': KNeighborsClassifier(),
-        'Random Forest': RandomForestClassifier(n_estimators=50),
-        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(100, 50), early_stopping=True)}
-'''END: Import models'''
+        'K-Neighbours (K=7)': KNeighborsClassifier(),
+        'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
+        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
+
+"""END: Import models"""
 
 
-#Main performance evaluation function 
+# Performance evaluation function 
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score as auc
@@ -101,7 +101,7 @@ def performance(encoder, models, K):
 
         for key in models:
             model = models[key]
-            model.fit(X_train_enc, y_train)
+            model.fit(X_train_enc, y_train) 
 
             X_test_enc = encoder.transform(X_test)
             y_test_predict = model.predict(X_test_enc)
@@ -117,7 +117,7 @@ def performance(encoder, models, K):
     res.write('Total time: '+str(round(toc-tic,3))+'\n')
     res.close()
 
-    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3), 's')
+    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')
 
 
 """START: Evaluation of encoders"""
