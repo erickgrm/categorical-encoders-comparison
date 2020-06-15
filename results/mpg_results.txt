@@ -78,3 +78,11 @@ CENG Encoder
  Random Forest (n=50): 0.010225471212080523
  Neural Network: 0.01401863523116563
 Total time: 2148.61
+EntityEmbedding Encoder
+ Linear Regression: 0.00924316860933846
+ Linear SVM: 0.009463030199207016
+ Radial SVM: 0.008295963856180833
+ K-Neighbours (K=7): 0.007512565762046891
+ Random Forest (n=50): 0.00918221305272729
+ Neural Network: 0.007714700395192316
+Total time: 38.846

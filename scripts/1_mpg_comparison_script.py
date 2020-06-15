@@ -40,7 +40,6 @@ from entity_embedding import EntityEmbeddingEncoder
 from pattern_preserving import SimplePPEncoder, AgingPPEncoder, GeneticPPEncoder
 
 Encoders = {'Ordinal': ce.OrdinalEncoder(),
-            'Polynomial': ce.PolynomialEncoder(),
             'OneHot': ce.OneHotEncoder(),
             'BackwardDifference': ce.BackwardDifferenceEncoder(),
             'Helmert': ce.HelmertEncoder(),
