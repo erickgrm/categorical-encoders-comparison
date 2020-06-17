@@ -76,7 +76,7 @@ Models = {'Naïve Bayes': GaussianNB(),
         'Radial SVM': svm.SVC(kernel='rbf'),
         'K-Neighbours (K=7)': KNeighborsClassifier(),
         'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
-        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
+        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(100, 50), early_stopping=True)}
 
 """END: Import models"""
 
@@ -115,10 +115,10 @@ def performance(encoder, models, K):
     res.write(type(encoder).__name__[0:-7]+' Encoder\n')
     for key in mean_auc:
         res.write(' '+key+': '+str(mean_auc[key])+'\n')
-    res.write('Total time: '+str(round(toc-tic,3))+'\n')
+    res.write('Total time: '+str(round(toc-tic,2))+'\n')
     res.close()
 
-    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')
+    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,2),'s')
 
 
 """START: Evaluation of encoders"""
