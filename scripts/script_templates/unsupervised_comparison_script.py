@@ -1,119 +1,123 @@
-#Main routine for comparison of categorical encoders for unsupervised learning
+# Main routine for comparison of categorical encoders for unsupervised learning
 # @author: github.com/erickgrm
 
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filename =  # example: 'adult.data' (with full path if not in same folder)
-separation = '\t'
-
-# Change the following according to where the encoders folder is
-encoders_path = '../../encoders/'
-
+filepath = '../datasets/  /'            # Path to file
+filename = ' '                          # .txt, .csv, .data or other
+separation = ' '                        # , or \t
+no_clusters=                            # integer
+##########################################################
 # Get filename prefix
 name_prefix= filename.split('.')[0]
-##########################################################
-
 
 # Read file and print summary
 import pandas as pd
-import sys
-sys.path.insert(1, encoders_path)
-from custom.utilities import *
-dataset = pd.read_csv(filename, sep=separation, header=None) 
-print('>> Total rows: ', len(dataset.iloc[0:,0]))
-print('>> Number of variables:', len(dataset.iloc[0,0:])-1)
-print('>> Total categorical instances:', num_categorical_instances(dataset), '\n')
+from utils import *
+dataset = pd.read_csv(filepath+filename, sep=separation, header=None) 
+print('>> Evaluating encoders on the', filename, 'dataset')
+print('>> No of rows: ', len(dataset.iloc[0:,0]))
+print('>> No of variables:', len(dataset.iloc[0,0:])-1)
+print('>> No of categorical variables:', num_categorical_cols(dataset))
+print('>> No of categorical instances:', num_categorical_instances(dataset))
 print('Results are saved to ../results/'+name_prefix+'_results.txt')
 
 # Separate target variable
-features = scale_df(dataset.drop(dataset.columns[-1], axis=1))
+features = dataset.drop(dataset.columns[-1], axis=1)
 target = dataset.iloc[:,-1]
 
+import warnings
+warnings.filterwarnings("ignore")
 
-'''START: Import encoders'''
+"""START: Import encoders"""
 import category_encoders as ce
-
-from pattern_preserving_encoders import NaivePPEncoder, AgingPPEncoder, GeneticPPEncoder
-from custom.utilities import *
-from EEEncoder import *
-from CENGEncoder import *
-#from CESAMOEncoder import *
-
+import sys
+sys.path.append('../encoders/')
+from ceng import CENGEncoder
+from cesamo import CESAMOEncoder
+from entity_embedding import EntityEmbeddingEncoder
+from pattern_preserving import SimplePPEncoder, AgingPPEncoder, GeneticPPEncoder
 
 Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'Polynomial': ce.PolynomialEncoder(),
             'OneHot': ce.OneHotEncoder(),
-            'Backward Difference': ce.BackwardDifferenceEncoder(),
+            'BackwardDifference': ce.BackwardDifferenceEncoder(),
             'Helmert': ce.HelmertEncoder(),
-            'Entity Embedding': EEEncoder(),
-            'Target': ce.TargetEncoder(),
+            'EntityEmbedding': EntityEmbeddingEncoder(),
+            'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            'CENG': CENGEncoder(),
-            'CESAMOEncoder': CESAMOEncoder(),
-            'Naive PP': NaivePPEncoder( num_predictors=2),
-            'Genetic PP': GeneticPPEncoder(num_predictors=2),
-            'Aging PP': AgingPPEncoder(num_predictors=2)}
-'''END: Import encoders'''
+            'CENG': CENGEncoder(verbose = 0),
+            'GeneticPP': GeneticPPEncoder(),
+            'AgingPP': AgingPPEncoder(),
+            'SimplePP': SimplePPEncoder(),
+            'CESAMOEncoder': CESAMOEncoder()}
+"""END: Import encoders"""
 
 
-'''START: Import models'''
+"""START: Import models"""
+try: 
+    from sklearn.cluster import KMeans, SpectralClustering, DBSCAN
+except:
+    raise Exception('Scikit-Learn 0.22.2+ not available')
 
-import sklearn.linear_model as lm
-import sklearn.svm as svm
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
-rbf_kernel = 1.0 * RBF(1.0)
-from custom.polynomial_regression import *
+Models = {'K-Means': Kmeans(no_clusters),
+          'Spectral Clustering': SpectralClustering(no_clusters),
+          'DBSCAN': DBSCAN(eps=0.3, min samples=15)}
 
-Models = {'Naive Bayes': GaussianNB(),
-        'Linear Regression': lm.LinearRegression(), 
-        'Polynomial Regression': PolynomialRegression(max_degree=5),
-        'Logistic Regression': lm.LogisticRegression(),
-        'Linear SVM': svm.LinearSVC(),
-        'Radial SVM': svm.SVC(kernel='rbf'),
-        'K-Neighbours (K=5)': KNeighborsClassifier(),
-        'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
-        'Neural Network': MLPClassifier(hidden_layer_sizes=(100, 50)),
-        'Gaussian Process': GaussianProcessClassifier(kernel=rbf_kernel)}
-'''END: Import models'''
+"""END: Import models"""
 
 
-#Main evaluation routine 
+# Performance evaluation function 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score as auc
+from sklearn.metrics import adjusted_mutual_information_score as ami
+from jqmcvi import base 
+import time
+def performance(encoder, models, K):
+    mean_ami = dict(zip(models.keys(), list(np.zeros(len(models)))))
+    mean_dunn = dict(zip(models.keys(), list(np.zeros(len(models)))))
 
-
-def performance(model, encoder, K):
-    accumulated_auc = 0.0
+    tic = time.perf_counter()
     for i in range(K):
-        X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.30)
-        X_train_enc = encoder.fit_transform(X_train, y_train)
+        features_enc = encoder.fit_transform(features, target)
 
-        model.fit(X_train_enc, y_train) 
+        for key in models:
+            model = models[key]
+            model.fit(features, target) 
 
-        X_test_enc = encoder.transform(X_test)
-        y_test_predict = model.predict(X_test_enc)
-        accumulated_auc += auc(y_test, y_test_predict)
+            y_predict = model.predict(features_enc)
+            mean_ami[key] += ami(y_predict, target)/K
+            mean_dunn[key]  += base.dunn(model.clusters)
 
-    return accumulated_auc/K
+    toc = time.perf_counter()
 
-table = []
+    # Write results to file
+    res = open('../results/'+name_prefix+'_results.txt', 'a')
+    res.write(type(encoder).__name__[0:-7]+' Encoder\n')
+    for key in mean_auc:
+        res.write(' '+key+': '+str(mean_auc[key])+'\n')
+    res.write('Total time: '+str(round(toc-tic,3))+'\n') 
+    res.close()
 
-K = 3 #Meta-parameter for evaluation of encoders
-for model in Models:
-    model_dict = {}
-    for encoder in Encoders:
-        model_dict[encoder] = performance(Models[model], Encoders[encoder],K)
-    table.append(model_dict)
-
-pd.DataFrame(table, index=Models.keys()).to_latex('table_'+name_prefix+'.tex', header=None)
+    print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')
 
 
+"""START: Evaluation of encoders"""
+K = 3 #Meta-parameter
+
+from multiprocessing import Pool, Process, cpu_count
+print('>> No of available cpu-cores:',  cpu_count(),'\n')
+pool = Pool(cpu_count())
+
+# Create results file
+results = open('../results/'+name_prefix+'_results.txt', 'w')
+results.close()
+
+# Main cycle
+for encoder in Encoders:
+    Process(target=performance, args=(Encoders[encoder], Models, K)).start()
+
+"""END: Evaluation of encoders"""
 
 
