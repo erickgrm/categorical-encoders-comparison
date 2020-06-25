@@ -4,10 +4,10 @@
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/      /'   # Path to file
-filename = ' '                     # .txt, .csv, .data or other
-separation = ' '                   # , or \t
-n_clusters=                        # integer
+filepath = '../datasets/4_salesdata/'   # Path to file
+filename = 'salesdata_cluster.csv'      # .txt, .csv, .data or other
+separation = ','                        # , or \t
+n_clusters=  4                         # integer
 ##########################################################
 # Get filename prefix
 name_prefix= filename.split('.')[0]

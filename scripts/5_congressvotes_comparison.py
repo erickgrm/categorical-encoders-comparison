@@ -1,13 +1,13 @@
-# Main routine for comparison of categorical encoders for supervised learning
+# Main routine for comparison of categorical encoders for unsupervised learning
 # @author: github.com/erickgrm
 
 #########################################################
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
-filepath = '../datasets/4_salesdata/'    # Path to file
-filename = 'salesdata.csv'               # .txt, .csv, .data or other
-separation = '\t'                        # , or \t
-
+filepath = '../datasets/5_congressvotes/'    # Path to file
+filename = 'congressvotes.csv'               # .txt, .csv, .data or other
+separation = ','                             # , or \t
+n_clusters= 2                                # integer
 ##########################################################
 # Get filename prefix
 name_prefix= filename.split('.')[0]
@@ -47,7 +47,7 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
             'EntityEmbedding': EntityEmbeddingEncoder(),
             'TargetEnc': ce.TargetEncoder(),
             'WOE': ce.WOEEncoder(),
-            #'CENG': CENGEncoder(verbose = 0),
+            'CENG': CENGEncoder(verbose = 0),
             'GeneticPP': GeneticPPEncoder(),
             'AgingPP': AgingPPEncoder(),
             'SimplePP': SimplePPEncoder(),
@@ -57,25 +57,14 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
 
 """START: Import models"""
 try: 
-    import sklearn.linear_model as lm
-    import sklearn.svm as svm
-    from sklearn.neighbors import KNeighborsClassifier
-    from sklearn.naive_bayes import GaussianNB
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.neural_network import MLPClassifier
-    from sklearn.gaussian_process.kernels import RBF
-    rbf_kernel = 1.0 * RBF(1.0)
+    from sklearn.cluster import KMeans, SpectralClustering, Birch #DBSCAN
 except:
     raise Exception('Scikit-Learn 0.22.2+ not available')
 
-Models = {'Naïve Bayes': GaussianNB(),
-        'Linear Regression': lm.LinearRegression(), 
-        'Logistic Regression': lm.LogisticRegression(),
-        'Linear SVM': svm.LinearSVC(),
-        'Radial SVM': svm.SVC(kernel='rbf'),
-        'K-Neighbours (K=7)': KNeighborsClassifier(),
-        'Random Forest (n=50)': RandomForestClassifier(n_estimators=50),
-        'Neural Network': MLPClassifier(max_iter=1000, hidden_layer_sizes=(50, 20), early_stopping=True)}
+Models = {'K-Means': KMeans(n_clusters),
+          'Spectral Clustering': SpectralClustering(n_clusters),
+          'Birch': Birch(n_clusters=n_clusters)}
+          #'DBSCAN': DBSCAN(eps=0.3, min_samples=15)}
 
 """END: Import models"""
 
@@ -83,52 +72,50 @@ Models = {'Naïve Bayes': GaussianNB(),
 # Performance evaluation function 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score as auc
+from sklearn.metrics import adjusted_mutual_info_score as ami
+from sklearn.metrics import calinski_harabasz_score as chs
+from sklearn.metrics import silhouette_score as sil
 import time
 def performance(encoder, models, K):
-    mean_auc = dict(zip(models.keys(), list(np.zeros(len(models)))))
+    mean_ami = dict(zip(models.keys(), list(np.zeros(len(models)))))
+    mean_chs = dict(zip(models.keys(), list(np.zeros(len(models)))))
+    mean_sil = dict(zip(models.keys(), list(np.zeros(len(models)))))
 
     tic = time.perf_counter()
     for i in range(K):
-        good_split = False
-        while not(good_split):
-            X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.30)
-            # Ensure the split is good in case of small or unbalanced datasets
-            if 1 < len(np.unique(y_train)) and 1 < len(np.unique(y_test)):
-                good_split = True
-
-        X_train_enc = encoder.fit_transform(X_train, y_train)
+        features_enc = encoder.fit_transform(features, target)
 
         for key in models:
             model = models[key]
-            model.fit(X_train_enc, y_train) 
+            
+            y_predict = model.fit_predict(features_enc, target)
 
-            X_test_enc = encoder.transform(X_test)
-            y_test_predict = model.predict(X_test_enc)
-            mean_auc[key] += auc(y_test, y_test_predict)/K
+            mean_ami[key] += ami(target, y_predict)/K
+            mean_chs[key] += chs(features_enc, y_predict)/K
+            mean_sil[key] += sil(features_enc, y_predict, metric='euclidean')/K
 
     toc = time.perf_counter()
 
     # Write results to file
     res = open('../results/'+name_prefix+'_results.txt', 'a')
     res.write(type(encoder).__name__[0:-7]+' Encoder\n')
-    for key in mean_auc:
-        res.write(' '+key+': '+str(mean_auc[key])+'\n')
-    res.write('Total time: '+str(round(toc-tic,3))+'\n')
+    for key in mean_ami:
+        res.write(' '+key+': '+str(mean_ami[key])+', '+str(mean_chs[key])+', '+str(mean_sil[key])+'\n')
+    res.write('Total time: '+str(round(toc-tic,3))+'\n') 
     res.close()
 
     print('Evaluation of', type(encoder).__name__[0:-7], 'Encoder completed in', round(toc-tic,3),'s')
 
 
 """START: Evaluation of encoders"""
-K = 3 #Meta-parameter
+K = 1 #Meta-parameter
 
 from multiprocessing import Pool, Process, cpu_count
 print('>> No of available cpu-cores:',  cpu_count(),'\n')
 pool = Pool(cpu_count())
 
 # Create results file
-results = open('../results/'+name_prefix+'_results.txt', 'w')
+results = open('../results/'+name_prefix+'_results.txt', 'a')
 results.close()
 
 # Main cycle
@@ -136,5 +123,3 @@ for encoder in Encoders:
     Process(target=performance, args=(Encoders[encoder], Models, K)).start()
 
 """END: Evaluation of encoders"""
-
-
