@@ -57,13 +57,13 @@ Encoders = {'Ordinal': ce.OrdinalEncoder(),
 
 """START: Import models"""
 try: 
-    from sklearn.cluster import KMeans, SpectralClustering, Birch #DBSCAN
+    from sklearn.cluster import KMeans, SpectralClustering, AgglomerativeClustering # Birch DBSCAN
 except:
     raise Exception('Scikit-Learn 0.22.2+ not available')
 
 Models = {'K-Means': KMeans(n_clusters),
-          'Spectral Clustering': SpectralClustering(n_clusters),
-          'Birch': Birch(n_clusters=n_clusters)}
+          'Spectral': SpectralClustering(n_clusters),
+          'Agglomerative': AgglomerativeClustering(n_clusters=n_clusters)}
           #'DBSCAN': DBSCAN(eps=0.3, min_samples=15)}
 
 """END: Import models"""
@@ -89,6 +89,10 @@ def performance(encoder, models, K):
             model = models[key]
             
             y_predict = model.fit_predict(features_enc, target)
+            c = 0
+            while len(np.unique(y_predict)) == 1 and c < 10:
+                y_predict = model.fit_predict(features_enc, target)
+                c +=1
 
             mean_ami[key] += ami(target, y_predict)/K
             mean_chs[key] += chs(features_enc, y_predict)/K
@@ -108,7 +112,7 @@ def performance(encoder, models, K):
 
 
 """START: Evaluation of encoders"""
-K = 1 #Meta-parameter
+K = 3 #Meta-parameter
 
 from multiprocessing import Pool, Process, cpu_count
 print('>> No of available cpu-cores:',  cpu_count(),'\n')
