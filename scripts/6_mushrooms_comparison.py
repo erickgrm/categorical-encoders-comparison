@@ -39,21 +39,19 @@ from cesamo import CESAMOEncoder
 from entity_embedding import EntityEmbeddingEncoder
 from pattern_preserving import SimplePPEncoder, AgingPPEncoder, GeneticPPEncoder
 
-Encoders = {
+Encoders = {'WOE': ce.WOEEncoder(),
+            'Helmert': ce.HelmertEncoder(),
+            'BackwardDifference': ce.BackwardDifferenceEncoder(),
+            'Ordinal': ce.OrdinalEncoder(),
+            'Polynomial': ce.PolynomialEncoder(),
+            'OneHot': ce.OneHotEncoder(),
+            'EntityEmbedding': EntityEmbeddingEncoder(),
+            'TargetEnc': ce.TargetEncoder(),
+            'GeneticPP': GeneticPPEncoder(),
+            'AgingPP': AgingPPEncoder(),
+            'SimplePP': SimplePPEncoder(),
+            'CESAMOEncoder': CESAMOEncoder(),
             'CENG': CENGEncoder(verbose = 0)}
-
-            #'WOE': ce.WOEEncoder(),
-            #'Helmert': ce.HelmertEncoder(),
-            #'BackwardDifference': ce.BackwardDifferenceEncoder(),
-            #'Ordinal': ce.OrdinalEncoder(),
-            #'Polynomial': ce.PolynomialEncoder(),
-            #'OneHot': ce.OneHotEncoder(),
-            #'EntityEmbedding': EntityEmbeddingEncoder(),
-            #'TargetEnc': ce.TargetEncoder(),
-            #'GeneticPP': GeneticPPEncoder(),
-            #'AgingPP': AgingPPEncoder(),
-            #'SimplePP': SimplePPEncoder(),
-            #'CESAMOEncoder': CESAMOEncoder()}
 """END: Import encoders"""
 
 import random
