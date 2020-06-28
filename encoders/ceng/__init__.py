@@ -37,7 +37,8 @@ class CENGEncoder(Encoder):
 
         # Take random sample 
         if 1000 < df.shape[0]:
-            df = df.sample(frac=0.35, replace=False)
+            #df = df.loc[np.random.randint(0,len(df), 1000)]
+            df = df.sample(frac=0.5, replace=False)
         
         # Save file as ceng_input.txt
         df.to_csv('ceng_input.txt', sep='\t', header=False, index=False)

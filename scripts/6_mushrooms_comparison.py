@@ -5,7 +5,7 @@
 # Change the following according to the name of the file to encode
 # and separation character (',' or '\t')
 filepath = '../datasets/6_mushrooms/'    # Path to file
-filename = 'mushrooms,csv'               # .txt, .csv, .data or other
+filename = 'mushrooms.csv'               # .txt, .csv, .data or other
 separation = ','                         # , or \t
 n_clusters=  2                           # integer
 ##########################################################
@@ -39,30 +39,32 @@ from cesamo import CESAMOEncoder
 from entity_embedding import EntityEmbeddingEncoder
 from pattern_preserving import SimplePPEncoder, AgingPPEncoder, GeneticPPEncoder
 
-Encoders = {'Ordinal': ce.OrdinalEncoder(),
-            'Polynomial': ce.PolynomialEncoder(),
-            'OneHot': ce.OneHotEncoder(),
-            'BackwardDifference': ce.BackwardDifferenceEncoder(),
-            'Helmert': ce.HelmertEncoder(),
-            'EntityEmbedding': EntityEmbeddingEncoder(),
-            'TargetEnc': ce.TargetEncoder(),
-            'WOE': ce.WOEEncoder(),
-            'CENG': CENGEncoder(verbose = 0),
-            'GeneticPP': GeneticPPEncoder(),
-            'AgingPP': AgingPPEncoder(),
-            'SimplePP': SimplePPEncoder(),
-            'CESAMOEncoder': CESAMOEncoder()}
+Encoders = {
+            'CENG': CENGEncoder(verbose = 0)}
+
+            #'WOE': ce.WOEEncoder(),
+            #'Helmert': ce.HelmertEncoder(),
+            #'BackwardDifference': ce.BackwardDifferenceEncoder(),
+            #'Ordinal': ce.OrdinalEncoder(),
+            #'Polynomial': ce.PolynomialEncoder(),
+            #'OneHot': ce.OneHotEncoder(),
+            #'EntityEmbedding': EntityEmbeddingEncoder(),
+            #'TargetEnc': ce.TargetEncoder(),
+            #'GeneticPP': GeneticPPEncoder(),
+            #'AgingPP': AgingPPEncoder(),
+            #'SimplePP': SimplePPEncoder(),
+            #'CESAMOEncoder': CESAMOEncoder()}
 """END: Import encoders"""
 
-
+import random
 """START: Import models"""
 try: 
     from sklearn.cluster import KMeans, SpectralClustering, AgglomerativeClustering # Birch DBSCAN
 except:
     raise Exception('Scikit-Learn 0.22.2+ not available')
 
-Models = {'K-Means': KMeans(n_clusters),
-          'Spectral': SpectralClustering(n_clusters),
+Models = {'K-Means': KMeans(n_clusters=n_clusters),
+          'Spectral': SpectralClustering(n_clusters=n_clusters, eigen_solver='lobpcg'),
           'Agglomerative': AgglomerativeClustering(n_clusters=n_clusters)}
           #'DBSCAN': DBSCAN(eps=0.3, min_samples=15)}
 
